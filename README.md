@@ -15,6 +15,7 @@ Copyright (c) 2016 Hagihara Ryosuke
 
 ## Special Thanks
 `cgi/` 以下は [windyakin](https://github.com/windyakin) 先輩によるものです。  
+[TNCT-SYSKEN/technyan-halo](https://github.com/TNCT-SYSKEN/technyan-halo)
 ```
 Copyright (c) 2015 windyakin
 ```
