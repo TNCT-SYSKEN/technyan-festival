@@ -4,7 +4,7 @@
  * @author Hagihara Ryosuke <raryosu@gmail.com>
  * @copyright 2016 Hagihara Ryosuke
  * @license MIT License
- * @version 1.0.0
+ * @version 1.1.2
 
 
                                                                 
@@ -60,7 +60,14 @@ enchant(); // enchant.jsの有効化
 window.onload = function() {
 	var game = new Game(320, 320);
 	game.fps = 24;
-	game.preload('img/technyanA.png', 'img/technyanB.png', 'img/technyanC.png', 'img/technyanD.png', 'img/technyanE.png', 'img/circle.png');
+	game.preload(
+		'img/top.png',
+		'img/technyanA.png', 
+		'img/technyanB.png', 
+		'img/technyanC.png', 
+		'img/technyanD.png', 
+		'img/technyanE.png', 
+		'img/circle.png');
 
 	game.onload = function() {
 		/**
@@ -68,30 +75,13 @@ window.onload = function() {
 		 **/
 		var createStartScene = function() {
 			var scene = new Scene();
-			scene.backgroundColor = '#ffc0cb';
 
-			// タイトル文字列
-			var title = new Label('Technyan Festival');
-			title.color = '#ffffff';
-			title.x = 73;
-			title.y = 96;
-			title.font = '20px sans-serif';
-			scene.addChild(title);
-
-			// サブタイトル（操作説明）
-			var subTitle = new Label('輪がてくにゃんに重なるタイミングでクリック');
-			subTitle.x = 15;
-			subTitle.y = 196;
-			subTitle.font = '14px sans-serif';
-			scene.addChild(subTitle);
-
-			// クリックでスタート
-			var startLabel = new Label('クリックでスタート');
-			startLabel.color = '#ffffff';
-			startLabel.x = 98;
-			startLabel.y = 280;
-			startLabel.font = '14px sans-serif';
-			scene.addChild(startLabel);
+			// タイトル画像
+			var startImg = new Sprite(320, 320);
+			startImg.image = game.assets['img/top.png'];
+			startImg.x = 0;
+			startImg.y = 0;
+			scene.addChild(startImg);
 
 			// タッチイベントを設定
 			scene.addEventListener(Event.TOUCH_START, function(e) {
@@ -109,18 +99,9 @@ window.onload = function() {
 			var scene = new Scene();
 			scene.backgroundColor = '#ffc0cb';
 
-			var time = 1000;
+			var time = 300;
 			var score = 0;
 			var levelLabel = new Label();
-
-			/*
-			// キーの割当
-			game.keybind('D'.charCodeAt(0), 'a');
-			game.keybind('F'.charCodeAt(0), 'b');
-			game.keybind('G'.charCodeAt(0), 'c');
-			game.keybind('J'.charCodeAt(0), 'd');
-			game.keybind('K'.charCodeAt(0), 'e');
-			*/
 
 			// 得点表示ラベル
 			var scoreLabel = new Label('スコア: ' + score);
@@ -229,57 +210,12 @@ window.onload = function() {
 				}
 				scoreLabel.text = 'スコア: ' + score;
 				createCircleStatus();
-				console.log('yeah');
 				scene.addChild(circle);
 				levelLabel.color = '#ffffff';
 				levelLabel.y = 96;
 				levelLabel.font = '28px sans-serif';
 				scene.addChild(levelLabel);
 			});
-
-			/*
-			scene.addEventListener("abuttondown", keyEventFunc);
-			scene.addEventListener("bbuttondown", keyEventFunc);
-			scene.addEventListener("cbuttondown", keyEventFunc);
-			scene.addEventListener("dbuttondown", keyEventFunc);
-			scene.addEventListener("ebuttondown", keyEventFunc);
-
-			function keyEventFunc(e) {
-				scene.removeChild(levelLabel);
-				var geoY = circle.y;
-				var technyan = e.type.charAt(0).toUpperCase();
-				// 誤差が小さいとき
-				if (
-					 (geoY == technyanA.y) || 
-					 (geoY == technyanB.y) || 
-					 (geoY == technyanC.y) || 
-					 (geoY == technyanD.y) || 
-					 (geoY == technyanE.y)) {
-					score += 500;
-
-					levelLabel.text = 'Excellent!! (+500)';
-				} else if((geoY >= technyanA.y+5 || geoY <= technyanA.y-5) || 
-					 (geoY >= technyanB.y+5 || geoY <= technyanB.y-5) || 
-					 (geoY >= technyanC.y+5 || geoY <= technyanC.y-5) || 
-					 (geoY >= technyanD.y+5 || geoY <= technyanD.y-5) || 
-					 (geoY >= technyanE.y+5 || geoY <= technyanE.y-5)) {
-					score += 100;
-					levelLabel.text = 'Good! (+100)';
-				} else {
-					score -= 50;
-					levelLabel.text = 'Bad... (-50)';
-				}
-				scoreLabel.text = 'スコア: ' + score;
-				createCircleStatus();
-				scene.addChild(circle);
-				levelLabel.color = '#ffffff';
-				levelLabel.x = 0;
-				levelLabel.y = 96;
-				levelLabel.font = '28px sans-serif';
-				scene.addChild(levelLabel);
-			}
-			*/
-
 
 			/**
 			 * 円の状態を生成する
@@ -314,6 +250,22 @@ window.onload = function() {
 			scoreLabel.font = '20pt sans-serif';
 			scene.addChild(scoreLabel);
 
+			// リクエスト送信
+			var url = "./cgi/count.cgi?" + score;
+			console.log(url);
+			var request = new XMLHttpRequest();
+			request.open('GET', url);
+			request.onreadystatechange = function () {
+				if (request.readyState != 4) {
+				// リクエスト中
+				} else if (request.status != 200) {
+				// 失敗
+				} else {
+				// 取得成功
+				console.log(request.responseText);
+				}
+			};
+			request.send(null);
 			// リトライラベル
 			var retry = new Label('画面をクリックでリトライ');
 			retry.color = '#fff';

@@ -8,4 +8,13 @@
 Hagihara Ryosuke (Github: [raryosu](https://github.com/raryosu))
 
 ## License
-[MITLicense](https://raw.githubusercontent.com/TNCT-SYSKEN/technyan-festival/master/LICENSE)
+[MITLicense](https://raw.githubusercontent.com/TNCT-SYSKEN/technyan-festival/master/LICENSE)  
+```
+Copyright (c) 2016 Hagihara Ryosuke
+```
+
+## Special Thanks
+`cgi/` 以下は [windyakin](https://github.com/windyakin) 先輩によるものです。  
+```
+Copyright (c) 2015 windyakin
+```
